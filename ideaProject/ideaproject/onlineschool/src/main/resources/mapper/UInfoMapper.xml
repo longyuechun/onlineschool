@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rulaifozu.onlineschool.dao.UInfoDao">
+
+    <select id="findPassWordByUEmail" resultType="String"
+            parameterType="String">
+        select uPassword from uInfo where uEmail = #{uEmail}
+    </select>
+
+    <resultMap id="resultUInfo" type="com.rulaifozu.onlineschool.pojo.UInfo">
+        <id property="uId" column="uId"/>
+        <association property="uMoneyInfo_id" column="uMoneyInfo_id"
+                     javaType="com.rulaifozu.onlineschool.pojo.UMoneyInfo"
+                     select="com.rulaifozu.onlineschool.dao.UMoneyInfoDao.findMoneyById"/>
+    </resultMap>
+
+    <select id="findUInfoByUId" resultMap="resultUInfo">
+        select  * from uInfo where uId=#{uId}
+    </select>
+    <update id="uptateUInfo" parameterType="com.rulaifozu.onlineschool.pojo.UInfo">
+        update uinfo set uName=#{uName},uAge=#{uAge},uSex=#{uSex},uPic=#{uPic} where uid=#{uId}
+    </update>
+
+    <insert id="addUInfo" parameterType="com.rulaifozu.onlineschool.pojo.UInfo">
+        insert into uInfo (uName,uPassword,uAge,uSex,uEmail,uPic,uMoneyInfo_id) values (#{uName},#{uPassword},#{uAge},#{uSex},#{uEmail},#{uPic},#{uMoneyInfo_id.uId})
+    </insert>
+
+    <select id="findUInfoByEmail" resultType="com.rulaifozu.onlineschool.pojo.UInfo" parameterType="String">
+        select  * from uInfo where uEmail=#{email}
+    </select>
+
+    <select id="findIdByEmail" resultType="String" parameterType="String">
+        select uname from uinfo where uemail=#{email}
+    </select>
+
+
+</mapper>

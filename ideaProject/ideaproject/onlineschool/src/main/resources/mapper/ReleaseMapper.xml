@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rulaifozu.onlineschool.dao.ReleaseDao">
+
+    <resultMap id="resultCInfo" type="com.rulaifozu.onlineschool.pojo.Release">
+        <id property="id" column="id"/>
+        <association property="uInfo_id" column="uInfo_id"
+                     javaType="com.rulaifozu.onlineschool.pojo.UInfo"
+                     select="com.rulaifozu.onlineschool.dao.UInfoDao.findUInfoByUId"/>
+    </resultMap>
+    <select id="findReleaseById" resultMap="resultCInfo"
+            parameterType="int">
+        select * from Release1 where id = #{id}
+    </select>
+
+    <insert id="addRelease" useGeneratedKeys="true" keyProperty="id" parameterType="com.rulaifozu.onlineschool.pojo.Release">
+        insert into release1 (uinfo_id,rtime) values (#{uInfo_id.uId},#{rTime})
+    </insert>
+
+
+
+
+</mapper>

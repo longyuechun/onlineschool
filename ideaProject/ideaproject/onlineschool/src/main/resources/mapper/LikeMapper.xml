@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rulaifozu.onlineschool.dao.LikeDao">
+
+    <select id="findAPassWordByNo" resultType="String"
+            parameterType="String">
+        select aPassword from aInfo where aNo = #{no}
+    </select>
+
+    <insert id="addLike" parameterType="com.rulaifozu.onlineschool.pojo.Like">
+        insert into like1 (cinfo_id,uinfo_id,liketime) values (#{cInfo_id.cNo},#{uInfo_id.uId},#{likeTime})
+    </insert>
+
+
+
+
+</mapper>

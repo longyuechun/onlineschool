@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rulaifozu.onlineschool.dao.CInfoDao">
+
+    <resultMap id="resultCInfo" type="com.rulaifozu.onlineschool.pojo.CInfo">
+        <id property="cNo" column="cNo"/>
+        <association property="release_id" column="release_id"
+                     javaType="com.rulaifozu.onlineschool.pojo.Release"
+                     select="com.rulaifozu.onlineschool.dao.ReleaseDao.findReleaseById"/>
+        <association property="cViewInfo_id" column="cViewInfo_id"
+                     javaType="com.rulaifozu.onlineschool.pojo.CViewInfo"
+                     select="com.rulaifozu.onlineschool.dao.CViewInfoDao.findCViewInfoById"/>
+    </resultMap>
+
+    <select id="findCInfoByCNo" resultMap="resultCInfo" parameterType="String">
+        select  * from cInfo where cNo=#{id}
+    </select>
+
+    <select id="findCInfoByTypeOrCName" resultMap="resultCInfo" parameterType="String">
+        select * from cInfo where
+        cname like "%${search}%" or ctype like "%${search}%"
+    </select>
+
+    <select id="findCInfoByType" resultMap="resultCInfo" parameterType="String">
+        select * from cInfo where ctype = #{search}
+    </select>
+
+    <select id="findCInfoByCPageView" resultMap="resultCInfo" >
+        SELECT cinfo.* from cinfo,cviewinfo
+        where cinfo.cViewInfo_id=cviewinfo.id
+        ORDER BY
+        cviewinfo.cPageView  DESC LIMIT 4;
+    </select>
+
+    <insert id="addCInfo" parameterType="com.rulaifozu.onlineschool.pojo.CInfo">
+        insert into cInfo (cNo,cName,cType,cIntro,cVideo,cPic,cMoney,cStatus,release_id,cViewInfo_id) values
+        (#{cNo},#{cName},#{cType},#{cIntro},#{cVideo},#{cPic},#{cMoney},#{cStatus},#{release_id.id},#{cViewInfo_id.id})
+    </insert>
+
+    <select id="findReCInfoBYUser" resultMap="resultCInfo" parameterType="Integer">
+        SELECT cinfo.* from cinfo,release1
+        where cinfo.release_id=release1.id
+        AND release1.uInfo_id=#{uId};
+    </select>
+
+    <select id="findSubCInfoBYUser" resultMap="resultCInfo" parameterType="Integer">
+        SELECT cinfo.* from cinfo,subscribe
+        where cinfo.cNo=subscribe.cInfo_id
+        AND subscribe.uInfo_id=#{uId};
+    </select>
+
+    <select id="findReCInfoBYUserStatus0" resultMap="resultCInfo" parameterType="Integer">
+        SELECT cinfo.* from cinfo,release1
+        where cinfo.release_id=release1.id
+        AND release1.uInfo_id=#{uId} and cStatus=0;
+    </select>
+
+    <select id="findReCInfoBYUserStatus1" resultMap="resultCInfo" parameterType="Integer">
+        SELECT cinfo.* from cinfo,release1
+        where cinfo.release_id=release1.id
+        AND release1.uInfo_id=#{uId} and cStatus=1;
+    </select>
+
+    <select id="findReCInfoBYUserStatus2" resultMap="resultCInfo" parameterType="Integer">
+        SELECT cinfo.* from cinfo,release1
+        where cinfo.release_id=release1.id
+        AND release1.uInfo_id=#{uId} and cStatus=2;
+    </select>
+
+    <select id="findCInfoBYStatus2" resultMap="resultCInfo" >
+        select * from cinfo where cstatus=2
+    </select>
+
+    <select id="findCInfoByNameInType" resultMap="resultCInfo">
+        select * from cinfo where cname like "%${search}%" and ctype = #{type}
+    </select>
+
+    <update id="updateCInfoStatus" >
+        update cinfo set cstatus=#{status} where cno=#{cno};
+    </update>
+
+
+</mapper>

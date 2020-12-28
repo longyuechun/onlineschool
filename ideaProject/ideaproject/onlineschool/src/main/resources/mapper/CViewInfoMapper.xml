@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rulaifozu.onlineschool.dao.CViewInfoDao">
+
+    <select id="findCViewInfoById" resultType="com.rulaifozu.onlineschool.pojo.CViewInfo"
+            parameterType="int">
+        select * from cViewInfo where id = #{id}
+    </select>
+
+    <insert id="addCViewInfo" useGeneratedKeys="true" keyProperty="id" parameterType="com.rulaifozu.onlineschool.pojo.CViewInfo">
+        insert into cViewInfo (cLike,cComment,cPageView) values (#{cLike},#{cComment},#{cPageView})
+    </insert>
+
+    <update id="addLikeNum" parameterType="String">
+        update cviewinfo
+        set  clike=clike+1
+        where id=
+            (SELECT cviewinfo_id
+            from cinfo
+            where cno=#{cno});
+    </update>
+
+    <update id="addCPageView" parameterType="String">
+        update cviewinfo
+        set  cpageview=cpageview+1
+        where id=
+            (SELECT cviewinfo_id
+            from cinfo
+            where cno=#{cno});
+    </update>
+    <!--addLikeNum-->
+    <update id="addLikeNum" parameterType="String">
+        update cviewinfo
+        set  clike=clike+1
+        where id=
+            (SELECT cviewinfo_id
+            from cinfo
+            where cno=#{cno});
+    </update>
+</mapper>

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rulaifozu.onlineschool.dao.UMoneyInfoDao">
+
+    <select id="findMoneyById" resultType="com.rulaifozu.onlineschool.pojo.UMoneyInfo"
+            parameterType="int">
+        select * from uMoneyInfo where uid = #{uId}
+    </select>
+
+    <insert id="addUMoneyInfo" useGeneratedKeys="true" keyProperty="uId" parameterType="com.rulaifozu.onlineschool.pojo.UMoneyInfo">
+        insert into uMoneyInfo (uMoney) values (#{uMoney})
+    </insert>
+
+    <select id="findMoney" parameterType="Integer" resultType="Integer">
+        select umoney from umoneyinfo where umoneyinfo.uid =
+        (select umoneyinfo_id from uinfo where uinfo.uid=#{uId})
+    </select>
+
+    <update id="updateMoneyByUid" parameterType="Integer" >
+        update umoneyinfo set umoney=umoney+#{money}
+        where uid=(
+        select umoneyinfo_id from uinfo where uid=#{id}
+        )
+    </update>
+
+
+</mapper>
